@@ -1,28 +1,25 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <spdlog/spdlog.h>
+#include <graphics/SingleWindowContext.hpp>
+#include <graphics/Window.hpp>
 
 int main() {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	GLFWwindow* window = glfwCreateWindow(640, 480, "Experiments", nullptr, nullptr);
-	if (!window) {
-		spdlog::critical("Cannot create GLFW window");
-	}
-	glfwMakeContextCurrent(window);
-	if (glewInit() != GLEW_OK) {
-		spdlog::critical("Cannot init glew");
-	}
-	glewExperimental = GL_TRUE;
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	graphics::SingleWindowContext context{ graphics::contextParams_t{
+		.versionMajor = 4,
+		.versionMinor = 5,
+		.openglProfile = GLFW_OPENGL_CORE_PROFILE,
+		.experimental = true
+	},
+	graphics::windowParams_t{
+		.width = 640,
+		.height = 480,
+		.name = "Minecraft"
+	} };
+	
 	glViewport(0, 0, 640, 480);
 
-	while (!glfwWindowShouldClose(window)) {
+	while (!context.getWindow().shouldClose()) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glfwPollEvents();
-		glfwSwapBuffers(window);
+		context.getWindow().pollEvents();
+		context.getWindow().swapBuffers();
 	}
 
     return 0;

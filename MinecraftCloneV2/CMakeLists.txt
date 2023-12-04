@@ -15,6 +15,8 @@ find_package(spdlog CONFIG REQUIRED)
 file(GLOB_RECURSE HEADERS  "include/*.hpp")
 file(GLOB_RECURSE SRC "src/*.cpp")
 
+include_directories("include")
+
 add_executable (MinecraftCloneV2 ${HEADERS} ${SRC})
 target_link_libraries(MinecraftCloneV2 PRIVATE GLEW::GLEW glfw spdlog::spdlog spdlog::spdlog_header_only glm::glm)
 
